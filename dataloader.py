@@ -12,9 +12,9 @@ class CharTrainVal(Dataset):
     def __init__(self,val=False):
         super().__init__()
         if val:
-            datalist = "test.txt"
+            datalist = "./dataset/test.txt"
         else:
-            datalist = "train.txt"
+            datalist = "./dataset/train.txt"
 
         with open(datalist, "r") as f:
             self.datalist = f.read().splitlines()
@@ -44,7 +44,7 @@ class CharTrainVal(Dataset):
         label = torch.tensor(a-1)
         # --generate a label according to datum name
 
-        with Image.open("./"+self.datalist[index]+".png") as datum:
+        with Image.open("./dataset/"+self.datalist[index]+".png") as datum:
             datum = PIL.ImageOps.invert(datum)
             datum = self.transform(datum)
             datum = datum-0.5
