@@ -2,13 +2,10 @@ from __future__ import print_function
 import argparse
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
-from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
-import dataloader
 import torchvision.models as models
-
+from dataset import CharTrainVal
 
 resnet18 = models.resnet18(pretrained=True)    # use resnet18 model
 resnet18.conv1 = nn.Conv2d(1,64,7,2,3,bias=False)  # modify input channel to 1 to fit Chars74k dataset
@@ -82,8 +79,8 @@ def main():
 
     device = torch.device("cuda" if use_cuda else "cpu")  #设置训练所用为CPU或GPU(CUDA)
 
-    datasets1 = dataloader.CharTrainVal()        # 实例化训练集
-    datasets2 = dataloader.CharTrainVal(val=True) # 实例化测试集
+    datasets1 = CharTrainVal()        # 实例化训练集
+    datasets2 = CharTrainVal(val=True) # 实例化测试集
     train_loader = torch.utils.data.DataLoader(datasets1,batch_size=12,shuffle=True,num_workers=8,drop_last=True) # 实例化训练数据加载器
 
     test_loader = torch.utils.data.DataLoader(datasets2,batch_size=10,shuffle=False,num_workers=1,drop_last=True) # 实例化测试数据加载器
